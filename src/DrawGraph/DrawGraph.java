@@ -9,27 +9,16 @@ import processing.data.*;
 import processing.event.*;
 import processing.opengl.*;
 
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.ArrayList;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.BufferedReader;
 
-import java.util.HashMap;
+import java.util.Random;
+import java.io.StringReader;
 import java.util.ArrayList;
-import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.IOException;
 
 public class DrawGraph extends PApplet
 {
-
-    
     boolean ctrl_pressed = false;
     boolean s_pressed = false;
 
@@ -115,152 +104,14 @@ public class DrawGraph extends PApplet
 
     public void setup()
     {
-
         surface.setResizable(true);
-        //surface.
-        // will draw a complete graph
-        G = generateCompleteGraph(10);
-
-        // draws a graph with the given relationships
-        ArrayList<Pair> relationships = new ArrayList<Pair>();
-        // 1 = medic, 2 = driver, 3 = chief
-        relationships.add(new Pair(1, 3));
-        relationships.add(new Pair(2, 1));
-        relationships.add(new Pair(2, 3));
-        relationships.add(new Pair(3, 1));
-        relationships.add(new Pair(3, 2));
-        relationships.add(new Pair(4, 2));
-        relationships.add(new Pair(5, 1));
-        relationships.add(new Pair(6, 1));
-        relationships.add(new Pair(6, 3));
-        relationships.add(new Pair(7, 2));
-        relationships.add(new Pair(8, 3));
-        G = generateBipartiteGraph(8, 3, relationships);
-
-    //  G = generateProblem6aGraph();
-        /*  
-  for (ArrayList<Integer> row : generateMatrixFromGraph(G = generateGraphFromMatrix
-                                                              ("0 1 0 1 0\n" +
-                                                               "0 0 1 0 1\n" +
-                                                               "1 0 0 1 0\n" +
-                                                               "0 1 0 0 1\n" +
-                                                               "1 0 1 0 0\n")))
-   {
-     System.out.println(row);
-   }
-         */
- /*
-   for (ArrayList<Integer> row : generateMatrixFromGraph(G = generateGraphFromMatrix
-                                                              ("0 0 1 0 1 0 1\n" +
-                                                               "1 0 0 1 0 1 0\n" +
-                                                               "0 1 0 0 1 0 1\n" +
-                                                               "1 0 1 0 0 1 0\n" +
-                                                               "0 1 0 1 0 0 1\n" +
-                                                               "1 0 1 0 1 0 0\n" +
-                                                               "0 1 0 1 0 1 0\n")))
-   {
-     System.out.println(row);
-   }
-         */
-            // problem 2.16 graphs G_1, G_2, and G_3
-        /*
-   G = generateGraphFromMatrix(
-           "0 1 1 0 0 1 0 0\n" +
-           "0 0 1 1 0 0 0 1\n" +
-           "0 0 0 1 1 0 0 0\n" +
-           "0 0 0 0 0 0 1 0\n" +
-           "0 0 0 0 0 1 1 0\n" +
-           "0 0 0 0 0 0 1 1\n" +
-           "0 0 0 0 0 0 0 1\n" +
-           "0 0 0 0 0 0 0 0\n"
-   );
-         */
-    // Problem 4 2.16 G_2
         G = generateGraphFromMatrix(
-                "1 1 1 1 0 0 0 0\n"
-                + "0 0 0 0 1 1 1 0\n"
-                + "0 0 0 0 1 1 1 0\n"
-                + "0 0 0 0 1 1 1 0\n"
-                + "0 0 0 0 0 0 0 1\n"
-                + "0 0 0 0 0 0 0 1\n"
-                + "0 0 0 0 0 0 0 1\n"
-                + "0 0 0 0 0 0 0 0\n"
+                          "0 1 1 0\n" +
+                          "0 0 0 1\n" +
+                          "0 0 0 0\n" +
+                          "0 0 0 1\n"
         );
-        /*     
-         */
- /*
-   G = generateGraphFromMatrix(
-           "0 1 1 1\n" +
-           "0 0 1 1\n" +
-           "0 0 0 1\n" +
-           "0 0 0 0\n"
-   );
-         */
-
-            //G = generateCompleteGraph(4);
-            // problem 7 c
-            // example of two graphs that have the same number of edges and vertices
-            // but the graphs are not isomorphic
-/*   
-    G = generateGraphFromMatrix(
-                      "0 1 1 1\n" +
-                      "0 0 0 0\n" +
-                      "0 0 0 0\n" +
-                      "0 0 0 0\n"
-    );
-    
-    G = generateGraphFromMatrix(
-                      "0 1 1 0\n" +
-                      "0 0 1 0\n" +
-                      "0 0 0 0\n" +
-                      "0 0 0 0\n"
-    );
-         */
-            // 7 d
-            // test for self complementary graph of order 6
-        /*
-   G = generateGraphFromMatrix(
-                      "0 1 1 1 1 1\n" +
-                      "0 0 1 1 1 1\n" +
-                      "0 0 0 1 1 1\n" +
-                      "0 0 0 0 1 1\n" +
-                      "0 0 0 0 0 1\n" +
-                      "0 0 0 0 0 0\n"
-    );
-    
-    G = generateGraphFromMatrix(
-                      "0 1 1 1 1 1\n" +
-                      "0 0 1 1 1 1\n" +
-                      "0 0 0 1 1 1\n" +
-                      "0 0 0 0 1 1\n" +
-                      "0 0 0 0 0 1\n" +
-                      "0 0 0 0 0 0\n"
-    );
-    G = generateGraphFromMatrix(
-                      "0 1 1 1 1 1\n" +
-                      "0 0 1 1 1 1\n" +
-                      "0 0 0 1 1 1\n" +
-                      "0 0 0 0 1 1\n" +
-                      "0 0 0 0 0 1\n" +
-                      "0 0 0 0 0 0\n"
-    );
-         */
- 
-    G = generateGraphFromMatrix(
-                      "0 1 1 0\n" +
-                      "0 0 0 1\n" +
-                      "0 0 0 0\n" +
-                      "0 0 0 1\n"
-    );
-        //   G = generate8QueenGraph();
-    
-        /*
-        G = generateStateMachine("()(0)(1 2 3 4 5 6)()"
-        + "(0~  ~0 0~19~1 1~09~1 1~  ~2 2~  ~2 2~11~3 2~29~4 3~01~5 4~  ~6 5~  ~6 6~  ~6 6~11~3 6~29~4)");
-        
-        
-        G = generateStateMachine("()(0)(3 4)()(0~00~3 0~19~4 0~++~1 0~--~2 1~19~4 2~19~4 2~19~4 4~09~4)");
-        */
+     
     }
 
     public void draw()
@@ -582,7 +433,7 @@ public class DrawGraph extends PApplet
             for (Integer ss : fa.states)
             {
                 Vertex temp = new Vertex(String.format("%d", ss));
-                if (fa.initialState.iterator().next()==ss)
+                if (fa.initialState.iterator().next().equals(ss))
                     temp.startS = true;
                 if (fa.finalStates.contains(ss))
                     temp.finalS=true;
@@ -675,11 +526,116 @@ public class DrawGraph extends PApplet
         return G;
     }
 
+    class Graph
+    {
+        boolean directed;
+        ArrayList<Vertex> vertices;
+        ArrayList<Edge> edges;
+        
+
+        Graph()
+        {
+            vertices = new ArrayList<Vertex>();
+            edges = new ArrayList<Edge>();
+        }
+
+        Graph(int vertexSize, int edgeWeight)
+        {
+            vertices = new ArrayList<Vertex>();
+            edges = new ArrayList<Edge>();
+        }
+        public boolean addVertex(Vertex vv)
+        {
+            return vertices.add(vv);
+        }
+        public boolean addEdge(Edge ee)
+        {
+            return edges.add(ee);
+        }
+    }
+
+    class Vertex
+    {
+            // determines i
+
+        boolean held = false;
+        boolean finalS = false;
+        boolean startS = false;
+        PVector loc;
+        String msg;
+
+        Vertex()
+        {
+            loc = new PVector(randomInRange(vertexRadius + 1, width / 2),
+                    randomInRange(vertexRadius + 1, height / 2));
+            msg = "";
+        }
+
+        Vertex(String msg)
+        {
+            loc = new PVector(randomInRange(vertexRadius + 1, width / 2),
+                    randomInRange(vertexRadius + 1, height / 2));
+            this.msg = msg;
+        }
+
+        Vertex(float x, float y)
+        {
+            loc = new PVector(x, y);
+            msg = "";
+        }
+
+        Vertex(float x, float y, String msg)
+        {
+            loc = new PVector(x, y);
+            this.msg = msg;
+        }
+
+        public void drawVertex()
+        {
+
+            loc.x = constrain(loc.x, vertexRadius + 1, width - vertexRadius - 1);
+            loc.y = constrain(loc.y, vertexRadius + 1, height - vertexRadius - 1);
+            
+            stroke(0);
+            strokeWeight(1);
+            noFill();
+            //ellipse(loc.x,loc.y - vertexRadius, vertexRadius * 2, vertexRadius);
+            // draw vertex as a circle
+            ellipse(loc.x, loc.y, vertexRadius * 2, vertexRadius * 2);
+            
+            // if state is a start state add a in arrow
+            if (startS)
+            {
+                line(loc.x - 2 * vertexRadius,loc.y,loc.x - vertexRadius,loc.y);
+                drawHeading(loc.x - vertexRadius - headingLen,loc.y,0,headingLen);
+            }
+            
+            
+            // if state is a final state
+            if (finalS)
+            {
+                ellipse(loc.x, loc.y, vertexRadius * 2 - 10, vertexRadius * 2 - 10);
+            }
+
+            fill(0);
+            if (mode == CanvasMode.SCREEN_SHOT)
+            {
+                textSize(30);
+            } else
+            {
+                textSize(12);
+            }
+            textAlign(CENTER);
+            text(msg, loc.x, loc.y);
+
+        }
+    }
+    
     class Edge
     {
 
         boolean bidirectional = false;
-        boolean directed = false;
+        boolean directed = true;
         public Vertex edgeStart;
         public Vertex edgeEnd;
         String msg;
@@ -698,7 +654,7 @@ public class DrawGraph extends PApplet
             edgeStart = ss;
             edgeEnd = ee;
             this.msg = msg;
-            this.directed = directed;
+            //this.directed = directed;
         }
         public void drawEdge()
         {
@@ -707,14 +663,25 @@ public class DrawGraph extends PApplet
             {
                 stroke(200);
                 double theta = Math.PI * 3 / 8;
-                strokeWeight(4);
+                strokeWeight(3);
 
+                // line over
+                
+                // draw line up from edge of vertex on left side
                 line(edgeStart.loc.x - vertexRadius * (float) Math.cos(theta),
                         edgeStart.loc.y - vertexRadius * (float) Math.sin(theta),
                         edgeStart.loc.x - vertexRadius * (float) Math.cos(theta),
                         edgeStart.loc.y - vertexRadius * (float) Math.sin(theta) - vertexRadius);
 
-                line(edgeStart.loc.x + vertexRadius * (float) Math.cos(theta), edgeStart.loc.y - vertexRadius * (float) Math.sin(theta), edgeStart.loc.x + vertexRadius * (float) Math.cos(theta), edgeStart.loc.y - vertexRadius * (float) Math.sin(theta) - vertexRadius);
+                
+                
+                // draw line up from edge of vertex on right sight
+                line(edgeStart.loc.x + vertexRadius * (float) Math.cos(theta), 
+                     edgeStart.loc.y - (vertexRadius + headingLen + 3) * (float) Math.sin(theta), 
+                     edgeStart.loc.x + vertexRadius * (float) Math.cos(theta),
+                     edgeStart.loc.y - vertexRadius * (float) Math.sin(theta) - vertexRadius);
+                
+                // draw line between them
                 line(edgeStart.loc.x - vertexRadius * (float) Math.cos(theta), edgeStart.loc.y - vertexRadius * (float) Math.sin(theta) - vertexRadius, edgeStart.loc.x + vertexRadius * (float) Math.cos(theta), edgeStart.loc.y - vertexRadius * (float) Math.sin(theta) - vertexRadius);
                 
                 if (directed)
@@ -747,7 +714,7 @@ public class DrawGraph extends PApplet
                             if (mode == CanvasMode.REGULAR)
                                 strokeWeight(1);
                             else
-                                strokeWeight(4);                            
+                                strokeWeight(3);                            
                             xStart = edgeStart.loc.x + (vertexRadius + altMag(i+1)*headingLen) * Math.cos(theta + Math.PI + altSign(i  )*(thetaOffset));
                             yStart = edgeStart.loc.y + (vertexRadius + altMag(i+1)*headingLen) * Math.sin(theta + Math.PI + altSign(i  )*(thetaOffset));
                             xEnd   = edgeEnd.loc.x   + (vertexRadius + altMag(i  )*headingLen) * Math.cos(theta +           altSign(i+1)*(thetaOffset));
@@ -771,7 +738,7 @@ public class DrawGraph extends PApplet
                         if (mode == CanvasMode.REGULAR)
                             strokeWeight(1);
                         else
-                            strokeWeight(4);                            
+                            strokeWeight(3);                            
                         double theta = atan2(edgeStart.loc.y - edgeEnd.loc.y,edgeStart.loc.x - edgeEnd.loc.x);
                         double xStart = edgeStart.loc.x + vertexRadius * Math.cos(theta + Math.PI);
                         double yStart = edgeStart.loc.y + vertexRadius * Math.sin(theta + Math.PI);
@@ -792,7 +759,7 @@ public class DrawGraph extends PApplet
                     if (mode == CanvasMode.REGULAR)
                         strokeWeight(1);
                     else
-                        strokeWeight(4);                            
+                        strokeWeight(3);                            
                     double theta = atan2(edgeStart.loc.y - edgeEnd.loc.y,edgeStart.loc.x - edgeEnd.loc.x);
                     double xStart = edgeStart.loc.x + vertexRadius * Math.cos(theta + Math.PI);
                     double yStart = edgeStart.loc.y + vertexRadius * Math.sin(theta + Math.PI);
@@ -822,128 +789,8 @@ public class DrawGraph extends PApplet
                 text(msg, (edgeStart.loc.x + edgeEnd.loc.x) / 2, (edgeStart.loc.y + edgeEnd.loc.y) / 2);
             }
         }
-//        public void lineBetween(Vertex a, Vertex b)
-//        {
-//            if (edgeStart == edgeEnd)
-//            {
-//                // draw self loop
-//                stroke(200);
-//                double theta = Math.PI * 3 / 8;
-//                strokeWeight(4);
-//
-//                line(a.loc.x - vertexRadius * (float) Math.cos(theta),
-//                        a.loc.y - vertexRadius * (float) Math.sin(theta),
-//                        a.loc.x - vertexRadius * (float) Math.cos(theta),
-//                        a.loc.y - vertexRadius * (float) Math.sin(theta) - vertexRadius);
-//
-//                line(a.loc.x + vertexRadius * (float) Math.cos(theta), a.loc.y - vertexRadius * (float) Math.sin(theta), a.loc.x + vertexRadius * (float) Math.cos(theta), a.loc.y - vertexRadius * (float) Math.sin(theta) - vertexRadius);
-//                line(a.loc.x - vertexRadius * (float) Math.cos(theta), a.loc.y - vertexRadius * (float) Math.sin(theta) - vertexRadius, a.loc.x + vertexRadius * (float) Math.cos(theta), a.loc.y - vertexRadius * (float) Math.sin(theta) - vertexRadius);
-//                strokeWeight(1);
-//                if (directed)
-//                {
-//                    drawHeading(a.loc.x + vertexRadius * (float) Math.cos(theta), a.loc.y - vertexRadius * (float) Math.sin(theta) - headingLen, (float) (Math.PI / 2), headingLen);
-//                }
-//
-//            } else
-//            {
-//                lineBetween(a.loc, b.loc);
-//            }
-//        }
-//
-//        
-//            // I refactored it but I still have no idea how it works...
-//        public void lineBetween(PVector a, PVector b)
-//        {
-//
-//            double scaledFactor = distance(a, b);
-//            float x = (float) ((b.x - a.x) / scaledFactor);
-//            float y = (float) ((b.y - a.y) / scaledFactor);
-//            if (mode == CanvasMode.SCREEN_SHOT)
-//            {
-//                strokeWeight(4);
-//            }
-//            else
-//            {
-//                strokeWeight(1);
-//            }
-//            stroke(200);
-//            line(a.x + x * vertexRadius, a.y + y * vertexRadius, b.x - x * vertexRadius, b.y - y * vertexRadius);
-//                // TODO: maybe every line draw should declare its stroke weight
-//            strokeWeight(1);
-//            if (directed)
-//            {
-//                drawHeading(b.x - x * (vertexRadius + headingLen), b.y - y * (vertexRadius + headingLen), atan2(y * vertexRadius, x * vertexRadius), headingLen);
-//            }
-//        }
-        /*
-  void lineBetween(Vertex a, Vertex b)
-  {
-    double normFactor = Math.pow(Math.pow(a.loc.x - b.loc.x, 2) + Math.pow(a.loc.y - b.loc.y, 2),0.5);
-    
-        //
-    PVector aToB = new PVector(b.loc.x - a.loc.x, b.loc.y - a.loc.y);
-    PVector bToA = new PVector(a.loc.x - b.loc.x,a.loc.y - b.loc.y);
-   
-    aToB.normalize();
-    aToB.mult(vertexRadius);
-        //line(a.loc.x,a.loc.y,a.loc.x + aToB.x,a.loc.y + aToB.y);
-    
-    bToA.normalize();
-    bToA.mult(vertexRadius);
-        //line(b.loc.x,b.loc.y,b.loc.x + bToA.x,b.loc.y + bToA.y);
-    line(a.loc.x + aToB.x,a.loc.y + aToB.y ,b.loc.x + bToA.x,b.loc.y + bToA.y);
-  }
-         */
- /*
-      // I have no idea how I coded this...
-  void lineBetween(Vertex a, Vertex b)
-  {
-        //
-    PVector aToB = new PVector(b.loc.x - a.loc.x, b.loc.y - a.loc.y);
-    PVector bToA = new PVector(a.loc.x - b.loc.x,a.loc.y - b.loc.y);
-    
-    PVector aToBNorm = new PVector(aToB.x, aToB.y);
-    aToBNorm.normalize();
-    aToBNorm.mult(vertexRadius);
-        //line(a.loc.x,a.loc.y,a.loc.x + aToBNorm.x,a.loc.y + aToBNorm.y);
-    
-    PVector bToANorm = new PVector(bToA.x, bToA.y);
-    bToANorm.normalize();
-    bToANorm.mult(vertexRadius);
-        //line(b.loc.x,b.loc.y,b.loc.x + bToANorm.x,b.loc.y + bToANorm.y);
-    line(a.loc.x + aToBNorm.x,a.loc.y + aToBNorm.y ,b.loc.x + bToANorm.x,b.loc.y + bToANorm.y);
-  }
-         */
     }
-
-    class Graph
-    {
-        boolean directed;
-        ArrayList<Vertex> vertices;
-        ArrayList<Edge> edges;
-        
-
-        Graph()
-        {
-            vertices = new ArrayList<Vertex>();
-            edges = new ArrayList<Edge>();
-        }
-
-        Graph(int vertexSize, int edgeWeight)
-        {
-            vertices = new ArrayList<Vertex>();
-            edges = new ArrayList<Edge>();
-        }
-        public boolean addVertex(Vertex vv)
-        {
-            return vertices.add(vv);
-        }
-        public boolean addEdge(Edge ee)
-        {
-            return edges.add(ee);
-        }
-    }
-
+    
     public static class LineAutomata
     {
             // An enumerated type for the states of a finite state automata
@@ -1105,85 +952,6 @@ public class DrawGraph extends PApplet
         }     // end transition()
     }     // end LineAutomata
 
-    class Vertex
-    {
-            // determines i
-
-        boolean held = false;
-        boolean finalS = false;
-        boolean startS = false;
-        PVector loc;
-        String msg;
-
-        Vertex()
-        {
-            loc = new PVector(randomInRange(vertexRadius + 1, width / 2),
-                    randomInRange(vertexRadius + 1, height / 2));
-            msg = "";
-        }
-
-        Vertex(String msg)
-        {
-            loc = new PVector(randomInRange(vertexRadius + 1, width / 2),
-                    randomInRange(vertexRadius + 1, height / 2));
-            this.msg = msg;
-        }
-
-        Vertex(float x, float y)
-        {
-            loc = new PVector(x, y);
-            msg = "";
-        }
-
-        Vertex(float x, float y, String msg)
-        {
-            loc = new PVector(x, y);
-            this.msg = msg;
-        }
-
-        public void drawVertex()
-        {
-
-            loc.x = constrain(loc.x, vertexRadius + 1, width - vertexRadius - 1);
-            loc.y = constrain(loc.y, vertexRadius + 1, height - vertexRadius - 1);
-            
-            stroke(0);
-            strokeWeight(1);
-            noFill();
-            
-            // draw vertex as a circle
-            ellipse(loc.x, loc.y, vertexRadius * 2, vertexRadius * 2);
-            
-            // if state is a start state add a in arrow
-            if (startS)
-            {
-                line(loc.x - 2 * vertexRadius,loc.y,loc.x - vertexRadius,loc.y);
-                drawHeading(loc.x - vertexRadius - headingLen,loc.y,0,headingLen);
-            }
-            
-            
-            // if state is a final state
-            if (finalS)
-            {
-                ellipse(loc.x, loc.y, vertexRadius * 2 - 10, vertexRadius * 2 - 10);
-            }
-
-            fill(0);
-            if (mode == CanvasMode.SCREEN_SHOT)
-            {
-                textSize(30);
-            } else
-            {
-                textSize(12);
-            }
-            textAlign(CENTER);
-            text(msg, loc.x, loc.y);
-
-        }
-
-    }
-    
-    
     public void settings()
     {
         size(displayWidth, displayHeight);

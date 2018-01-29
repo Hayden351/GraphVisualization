@@ -1,0 +1,139 @@
+
+   //   G = generate8QueenGraph();
+    
+        /*
+        G = generateStateMachine("()(0)(1 2 3 4 5 6)()"
+        + "(0~  ~0 0~19~1 1~09~1 1~  ~2 2~  ~2 2~11~3 2~29~4 3~01~5 4~  ~6 5~  ~6 6~  ~6 6~11~3 6~29~4)");
+        
+        
+        G = generateStateMachine("()(0)(3 4)()(0~00~3 0~19~4 0~++~1 0~--~2 1~19~4 2~19~4 2~19~4 4~09~4)");
+        */
+
+G = generateCompleteGraph(10);
+
+        // draws a graph with the given relationships
+        ArrayList<Pair> relationships = new ArrayList<Pair>();
+        // 1 = medic, 2 = driver, 3 = chief
+        relationships.add(new Pair(1, 3));
+        relationships.add(new Pair(2, 1));
+        relationships.add(new Pair(2, 3));
+        relationships.add(new Pair(3, 1));
+        relationships.add(new Pair(3, 2));
+        relationships.add(new Pair(4, 2));
+        relationships.add(new Pair(5, 1));
+        relationships.add(new Pair(6, 1));
+        relationships.add(new Pair(6, 3));
+        relationships.add(new Pair(7, 2));
+        relationships.add(new Pair(8, 3));
+        G = generateBipartiteGraph(8, 3, relationships);
+
+
+    //  G = generateProblem6aGraph();
+        /*  
+  for (ArrayList<Integer> row : generateMatrixFromGraph(G = generateGraphFromMatrix
+                                                              ("0 1 0 1 0\n" +
+                                                               "0 0 1 0 1\n" +
+                                                               "1 0 0 1 0\n" +
+                                                               "0 1 0 0 1\n" +
+                                                               "1 0 1 0 0\n")))
+   {
+     System.out.println(row);
+   }
+         */
+ /*
+   for (ArrayList<Integer> row : generateMatrixFromGraph(G = generateGraphFromMatrix
+                                                              ("0 0 1 0 1 0 1\n" +
+                                                               "1 0 0 1 0 1 0\n" +
+                                                               "0 1 0 0 1 0 1\n" +
+                                                               "1 0 1 0 0 1 0\n" +
+                                                               "0 1 0 1 0 0 1\n" +
+                                                               "1 0 1 0 1 0 0\n" +
+                                                               "0 1 0 1 0 1 0\n")))
+   {
+     System.out.println(row);
+   }
+         */
+            // problem 2.16 graphs G_1, G_2, and G_3
+        /*
+   G = generateGraphFromMatrix(
+           "0 1 1 0 0 1 0 0\n" +
+           "0 0 1 1 0 0 0 1\n" +
+           "0 0 0 1 1 0 0 0\n" +
+           "0 0 0 0 0 0 1 0\n" +
+           "0 0 0 0 0 1 1 0\n" +
+           "0 0 0 0 0 0 1 1\n" +
+           "0 0 0 0 0 0 0 1\n" +
+           "0 0 0 0 0 0 0 0\n"
+   );
+         */
+    // Problem 4 2.16 G_2
+        G = generateGraphFromMatrix(
+                "1 1 1 1 0 0 0 0\n"
+                + "0 0 0 0 1 1 1 0\n"
+                + "0 0 0 0 1 1 1 0\n"
+                + "0 0 0 0 1 1 1 0\n"
+                + "0 0 0 0 0 0 0 1\n"
+                + "0 0 0 0 0 0 0 1\n"
+                + "0 0 0 0 0 0 0 1\n"
+                + "0 0 0 0 0 0 0 0\n"
+        );
+        /*     
+         */
+ /*
+   G = generateGraphFromMatrix(
+           "0 1 1 1\n" +
+           "0 0 1 1\n" +
+           "0 0 0 1\n" +
+           "0 0 0 0\n"
+   );
+         */
+
+            //G = generateCompleteGraph(4);
+            // problem 7 c
+            // example of two graphs that have the same number of edges and vertices
+            // but the graphs are not isomorphic
+/*   
+    G = generateGraphFromMatrix(
+                      "0 1 1 1\n" +
+                      "0 0 0 0\n" +
+                      "0 0 0 0\n" +
+                      "0 0 0 0\n"
+    );
+    
+    G = generateGraphFromMatrix(
+                      "0 1 1 0\n" +
+                      "0 0 1 0\n" +
+                      "0 0 0 0\n" +
+                      "0 0 0 0\n"
+    );
+         */
+            // 7 d
+            // test for self complementary graph of order 6
+        /*
+   G = generateGraphFromMatrix(
+                      "0 1 1 1 1 1\n" +
+                      "0 0 1 1 1 1\n" +
+                      "0 0 0 1 1 1\n" +
+                      "0 0 0 0 1 1\n" +
+                      "0 0 0 0 0 1\n" +
+                      "0 0 0 0 0 0\n"
+    );
+    
+    G = generateGraphFromMatrix(
+                      "0 1 1 1 1 1\n" +
+                      "0 0 1 1 1 1\n" +
+                      "0 0 0 1 1 1\n" +
+                      "0 0 0 0 1 1\n" +
+                      "0 0 0 0 0 1\n" +
+                      "0 0 0 0 0 0\n"
+    );
+    G = generateGraphFromMatrix(
+                      "0 1 1 1 1 1\n" +
+                      "0 0 1 1 1 1\n" +
+                      "0 0 0 1 1 1\n" +
+                      "0 0 0 0 1 1\n" +
+                      "0 0 0 0 0 1\n" +
+                      "0 0 0 0 0 0\n"
+    );
+         */
+ 
