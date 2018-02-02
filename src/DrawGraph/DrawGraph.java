@@ -3,7 +3,10 @@ package DrawGraph;
 import Definition.FiniteAutomata;
 import Definition.Transition;
 import Definition.TransitionCondition;
+
 import automatagenerator.AutomataGenerator;
+
+
 import processing.core.*;
 import processing.data.*;
 import processing.event.*;
@@ -21,6 +24,8 @@ public class DrawGraph extends PApplet
 {
     boolean ctrl_pressed = false;
     boolean s_pressed = false;
+
+    
 
     enum CanvasMode
     {
@@ -64,10 +69,6 @@ public class DrawGraph extends PApplet
     // generates a random float between lBound and rBound
     public float randomInRange(float lBound, float rBound)
     {
-    //  Random generate = new Random();
-    //  float value = (generate.nextFloat() * (rBound - lBound)) + lBound;
-    //  return value;
-
         return (new Random().nextFloat() * (rBound - lBound) + lBound);
     }
     public void drawHeading (float x, float y, float direction, float magnitude)
@@ -106,17 +107,62 @@ public class DrawGraph extends PApplet
     {
         surface.setResizable(true);
         G = generateGraphFromMatrix(
-                          "0 1 1 0\n" +
-                          "0 0 0 1\n" +
-                          "0 0 0 0\n" +
-                          "0 0 0 1\n"
+                          "0 1 1 1 0\n" +
+                          "0 0 0 1 1\n" +
+                          "0 0 1 1 0\n" +
+                          "1 0 1 0 1\n" +
+                          "0 1 0 1 0\n"
         );
-     
+        G = generateStateMachine("(PairReader)(1)(8)()(0~((~1 1~00~2 1~19~3 2~,,~4 3~09~3 3~,,~4 4~09~5 5~09~5 5~..~6 6~09~7 7~09~7 7~))~8 8~,,~0)");
+        /*
+        G = new Graph();
+        G.directed = false;
+        Vertex[][] grid = new Vertex[4][4];
+        for (int i = 0; i < grid.length ;i++)
+        {
+            for (int j = 0; j < grid.length; j++)
+            {
+                
+                grid[i][j] = new Vertex(vertexRadius,i*vertexRadius * 4 + 500, j * vertexRadius * 4+ 125);
+                G.addVertex(grid[i][j]);
+            }
+        }
+        for (int i = 0; i < grid.length ;i++)
+        {
+            for (int j = 0; j < grid.length; j++)
+            {
+                for (int x = -1; x <= 1; x++)
+                {
+                    for (int y = -1; y <= 1; y++)
+                    {
+                        if (x == 0 && y == 0)
+                            continue;
+                        addAll(grid,i,j,x,y);
+                    }
+                }
+            }
+        }
+        for (ArrayList<Integer> row : generateMatrixFromGraph(G))
+        {
+            System.out.println(row);
+        }
+        */
     }
-
+    private void addAll(Vertex[][] grid, int i, int j, int x, int y)
+    {
+        int posX = i;
+        int posY = j;
+        while (0 <= posX && posX < grid.length && 0 <= posY && posY < grid.length)
+        {
+            if (!(posX == i && posY == j))
+                G.addEdge(new Edge(grid[i][j], grid[posX][posY]));
+            posX += x;
+            posY += y;
+            
+        }
+    }
     public void draw()
     {
-        checkKeys();
         background(255);
 
         for (Vertex vv : G.vertices)
@@ -159,14 +205,7 @@ public class DrawGraph extends PApplet
         }
     }
 
-    public void checkKeys()
-    {
-        if (ctrl_pressed && s_pressed)
-        {
-            System.out.print("\nGraph Saved\n");
-            save("C:\\Users\\Hayden\\OneDrive\\Processing\\Images\\Graph.png");
-        }
-    }
+    
 
     public void keyPressed()
     {
@@ -181,6 +220,7 @@ public class DrawGraph extends PApplet
             s_pressed = true;
         }
         */
+        
     }
 
     public void keyReleased()
@@ -208,34 +248,34 @@ public class DrawGraph extends PApplet
 
         for (int i = 0; i < 6; i++)
         {
-            Vertex carbon = new Vertex((i + 2) * (width / 9) + vertexRadius + 1, height / 2, "C");
+            Vertex carbon = new Vertex(vertexRadius,(i + 2) * (width / 9) + vertexRadius + 1, height / 2, "C");
 
             G.vertices.add(carbon);
 
             if (i != 0)
             {
-                G.edges.add(new Edge(G.vertices.get(i - 1), G.vertices.get(i)));
+                G.addEdge(new Edge(G.vertices.get(i - 1), G.vertices.get(i)));
             }
 
         }
         Vertex firstCarbon = G.vertices.get(0);
         Vertex lastCarbon = G.vertices.get(5);
-        Vertex firstHydrogen = new Vertex(firstCarbon.loc.x - 5 * vertexRadius, firstCarbon.loc.y, "H");
-        Vertex lastHydrogen = new Vertex(lastCarbon.loc.x + 5 * vertexRadius, lastCarbon.loc.y, "H");
+        Vertex firstHydrogen = new Vertex(vertexRadius,firstCarbon.loc.x - 5 * vertexRadius, firstCarbon.loc.y, "H");
+        Vertex lastHydrogen = new Vertex(vertexRadius,lastCarbon.loc.x + 5 * vertexRadius, lastCarbon.loc.y, "H");
         G.vertices.add(firstHydrogen);
         G.vertices.add(lastHydrogen);
-        G.edges.add(new Edge(firstCarbon, firstHydrogen));
-        G.edges.add(new Edge(lastCarbon, lastHydrogen));
+        G.addEdge(new Edge(firstCarbon, firstHydrogen));
+        G.addEdge(new Edge(lastCarbon, lastHydrogen));
 
         for (int i = 0; i < 6; i++)
         {
             Vertex carbon = G.vertices.get(i);
-            Vertex hydrogenUp = new Vertex(carbon.loc.x, carbon.loc.y - 5 * vertexRadius, "H");
-            Vertex hydrogenDown = new Vertex(carbon.loc.x, carbon.loc.y + 5 * vertexRadius, "H");
+            Vertex hydrogenUp = new Vertex(vertexRadius,carbon.loc.x, carbon.loc.y - 5 * vertexRadius, "H");
+            Vertex hydrogenDown = new Vertex(vertexRadius,carbon.loc.x, carbon.loc.y + 5 * vertexRadius, "H");
             G.vertices.add(hydrogenUp);
             G.vertices.add(hydrogenDown);
-            G.edges.add(new Edge(carbon, hydrogenUp));
-            G.edges.add(new Edge(carbon, hydrogenDown));
+            G.addEdge(new Edge(carbon, hydrogenUp));
+            G.addEdge(new Edge(carbon, hydrogenDown));
         }
         System.out.printf("%d %d\n", G.vertices.size(), G.edges.size());
         return G;
@@ -257,7 +297,7 @@ public class DrawGraph extends PApplet
         {
             float xPos = randomInRange(width / 4 + vertexRadius, width / 2 - 4 * vertexRadius);
             float yPos = randomInRange(vertexRadius + 1, height - vertexRadius - 1);
-            G.vertices.add(new Vertex(xPos, yPos, String.format("E%d", i + 1)));
+            G.vertices.add(new Vertex(vertexRadius,xPos, yPos, String.format("E%d", i + 1)));
         }
 
         String[] temp =
@@ -268,12 +308,12 @@ public class DrawGraph extends PApplet
         {
             float xPos = randomInRange(width / 2 + 4 * vertexRadius + 1, width - vertexRadius - 1);
             float yPos = randomInRange(vertexRadius + 1, height - vertexRadius - 1);
-            G.vertices.add(new Vertex(xPos, yPos, temp[i]));
+            G.vertices.add(new Vertex(vertexRadius,xPos, yPos, temp[i]));
         }
 
         for (Pair pp : r)
         {
-            G.edges.add(new Edge(G.vertices.get(pp.left - 1), G.vertices.get(leftNodes + pp.right - 1)));
+            G.addEdge(new Edge(G.vertices.get(pp.left - 1), G.vertices.get(leftNodes + pp.right - 1)));
         }
 
         return G;
@@ -307,13 +347,13 @@ public class DrawGraph extends PApplet
         {
             float xPos = constrain(width * (float) generate.nextDouble(), vertexRadius + 1, width - vertexRadius - 1);
             float yPos = randomInRange(vertexRadius + 1, height - vertexRadius - 1);
-            G.vertices.add(new Vertex(xPos, yPos, new Integer(i).toString()));
+            G.vertices.add(new Vertex(vertexRadius, xPos, yPos, new Integer(i).toString()));
         }
         for (int i = 0; i < G.vertices.size(); i++)
         {
             for (int j = 0; j < i; j++)
             {
-                G.edges.add(new Edge(G.vertices.get(i), G.vertices.get(j)));
+                G.addEdge(new Edge(G.vertices.get(i), G.vertices.get(j)));
             }
         }
         return generateGraphFromMatrix(graphRepresentation);
@@ -368,7 +408,7 @@ public class DrawGraph extends PApplet
         {
             float xPos = randomInRange(vertexRadius + 1, width - vertexRadius - 1);
             float yPos = randomInRange(vertexRadius + 1, height - vertexRadius - 1);
-            G.vertices.add(new Vertex(xPos, yPos, new Integer(i).toString()));
+            G.vertices.add(new Vertex(vertexRadius, xPos, yPos, new Integer(i).toString()));
         }
 
         for (int i = 0; i < matrix.size(); i++)
@@ -377,7 +417,7 @@ public class DrawGraph extends PApplet
             {
                 if (matrix.get(i).get(j) >= 1)
                 {
-                    G.edges.add(new Edge(G.vertices.get(i), G.vertices.get(j), ""/*matrix.get(i).get(j).toString()*/));
+                    G.addEdge(new Edge(G.vertices.get(i), G.vertices.get(j), ""/*matrix.get(i).get(j).toString()*/));
                 }
             }
         }
@@ -409,7 +449,7 @@ public class DrawGraph extends PApplet
         {
             for (int j = 0; j < 4; j++)
             {
-                G.vertices.add(new Vertex(i * 350 + vertexRadius * 6 - 100, j * 350 + vertexRadius * 2, values[j][i]));
+                G.vertices.add(new Vertex(vertexRadius, i * 350 + vertexRadius * 6 - 100, j * 350 + vertexRadius * 2, values[j][i]));
             }
         }
 
@@ -419,6 +459,7 @@ public class DrawGraph extends PApplet
     public Graph generateStateMachine(String input)
     {
         Graph G = new Graph();
+        G.directed = true;
         FiniteAutomata fa = null;
         try
         {
@@ -428,106 +469,34 @@ public class DrawGraph extends PApplet
         {
             System.err.printf("%s, generateStateMachine failed\n", fnfe);
         }
+        
         if (fa != null)
         {
             for (Integer ss : fa.states)
             {
-                Vertex temp = new Vertex(String.format("%d", ss));
-                if (fa.initialState.iterator().next().equals(ss))
-                    temp.startS = true;
+                Vertex temp = new Vertex(vertexRadius,String.format("%d", ss));
+                if (!fa.initialState.isEmpty())
+                    if (fa.initialState.iterator().next().equals(ss))
+                        temp.startS = true;
                 if (fa.finalStates.contains(ss))
                     temp.finalS=true;
                         
                 G.vertices.add(temp);
             }
             for (Transition tt : fa.delta)
-            {
                 for (Vertex vv : G.vertices)
-                {
-                    if (vv.msg.equals(tt.antecedent.iterator().next().toString()))
-                    {
+                    if (vv.message.equals(tt.antecedent.iterator().next().toString())) // find the vertex that matches the antecedent of the transition
                         for (Vertex uu : G.vertices)
-                        {
-                            if (uu.msg.equals(tt.consequent.iterator().next().toString()))
-                            {
-                                TransitionCondition tc = tt.incidence.iterator().next();
-                                G.edges.add(new Edge(vv,uu,
-                                        (tc.lBound  == tc.rBound)?
-                                                String.format("\'%c\'",tc.lBound):
-                                                String.format("\'%c\'..\'%c\'",tc.lBound,tc.rBound)));
-                            }
-                        }
-                    }
-                }
-            }
+                            if (uu.message.equals(tt.consequent.iterator().next().toString())) // find vertex that matches the consequent of the transition
+                                G.addEdge(new Edge(vv,uu,tt.incidence.iterator().next().toString()));
         }
-                
-        /*
-        Vertex a;
-        Vertex b;
-        Vertex c;
-        Vertex d;
-
-        Graph G = new Graph();
-        a = new Vertex("0");
-        a.startS = true;
-        G.vertices.add(a);
-        G.edges.add(new Edge(a, a, "\' \'"));
-
-        b = new Vertex("1");
-        G.vertices.add(b);
-        G.edges.add(new Edge(a, a, "\' \'"));
-
-        G.edges.add(new Edge(a, b, "("));
-        G.edges.add(new Edge(b, b, "\' \'"));
-
-        a = new Vertex("2");
-        G.edges.add(new Edge(b, a, "0"));
-        G.vertices.add(a);
-
-        c = new Vertex("3");
-        G.edges.add(new Edge(b, c, "1..9"));
-        G.vertices.add(c);
-        G.edges.add(new Edge(c, c, "0..9"));
-
-        d = new Vertex("4");
-        G.vertices.add(d);
-        G.edges.add(new Edge(d, d, "\' \'"));
-        G.edges.add(new Edge(a, d, "\' \'"));
-        G.edges.add(new Edge(c, d, "\' \'"));
-
-        a = new Vertex("5");
-        G.vertices.add(a);
-        G.edges.add(new Edge(a, a, "\' \'"));
-        G.edges.add(new Edge(d, a, ","));
-
-        d = new Vertex("6");
-        G.vertices.add(d);
-        G.edges.add(new Edge(d, d, "0..9"));
-        G.edges.add(new Edge(a, d, "0..9"));
-
-        a = new Vertex("7");
-        G.vertices.add(a);
-        G.edges.add(new Edge(a, a, "0..9"));
-        G.edges.add(new Edge(d, a, "."));
-
-        d = new Vertex("8");
-        d.finalS = true;
-        G.vertices.add(d);
-        G.edges.add(new Edge(d, d, "\' \'"));
-        G.edges.add(new Edge(a, d, ")"));
-
-        a = new Vertex("9");
-        G.vertices.add(a);
-        G.edges.add(new Edge(a, a, "\' \'"));
-        G.edges.add(new Edge(d, a, ","));
-        G.edges.add(new Edge(a, b, "("));
-*/
         return G;
     }
 
     class Graph
     {
+        float vertexRadius;
+        float headingLength;
         boolean directed;
         ArrayList<Vertex> vertices;
         ArrayList<Edge> edges;
@@ -544,62 +513,101 @@ public class DrawGraph extends PApplet
             vertices = new ArrayList<Vertex>();
             edges = new ArrayList<Edge>();
         }
+        Graph(float vertexRadius,boolean directed, float headingLength)
+        {
+            this.vertexRadius = vertexRadius;
+            this.directed = directed;
+            this.headingLength = headingLength;
+        }
         public boolean addVertex(Vertex vv)
         {
             return vertices.add(vv);
         }
-        public boolean addEdge(Edge ee)
+        public boolean addEdge(Edge newEdge)
         {
-            return edges.add(ee);
+            // TODO: this method looks awful but it works
+            boolean isNew = true;
+            newEdge.directed = directed;
+            for (Edge ee : edges)
+            {
+                // edges are the same do not add
+                if (newEdge.edgeEnd == ee.edgeEnd && newEdge.edgeStart == ee.edgeStart)
+                {
+                    isNew = false;
+                    break;
+                }
+                // bi directional edge
+                else if (newEdge.edgeEnd == ee.edgeStart && newEdge.edgeStart == ee.edgeEnd)
+                {
+                    ee.bidirectional = true;
+                    ee.otherMessage = newEdge.message;
+                    isNew = false;
+                    break;
+                }
+                else // edge is new edge
+                {
+                    
+                }
+            }
+            if (isNew)
+                edges.add(newEdge);
+            
+            return true;
         }
     }
 
     class Vertex
     {
             // determines i
-
+        float vertexRadius;
         boolean held = false;
         boolean finalS = false;
         boolean startS = false;
         PVector loc;
-        String msg;
+        String message;
 
-        Vertex()
+        Vertex(float radius)
         {
-            loc = new PVector(randomInRange(vertexRadius + 1, width / 2),
-                    randomInRange(vertexRadius + 1, height / 2));
-            msg = "";
+            this(radius, new PVector(randomInRange(radius + 1, width / 2),
+                    randomInRange(radius + 1, height / 2)),"");
+        }
+        Vertex(float radius, PVector coordinates)
+        {
+            this(radius,coordinates.x,coordinates.y);
+        }
+        Vertex(float radius, float x, float y)
+        {
+            this(radius,x,y,"");
         }
 
-        Vertex(String msg)
+        Vertex(float radius, String msg)
         {
-            loc = new PVector(randomInRange(vertexRadius + 1, width / 2),
-                    randomInRange(vertexRadius + 1, height / 2));
-            this.msg = msg;
+            this(radius, new PVector(randomInRange(radius + 1, width / 2),
+                    randomInRange(radius + 1, height / 2)),msg);
         }
 
-        Vertex(float x, float y)
+        Vertex(float radius, PVector coordinates , String msg)
         {
-            loc = new PVector(x, y);
-            msg = "";
+            this(radius,coordinates.x,coordinates.y,msg);
         }
-
-        Vertex(float x, float y, String msg)
+        Vertex(float radius, float x, float y, String msg)
         {
-            loc = new PVector(x, y);
-            this.msg = msg;
+            vertexRadius = radius;
+            loc = new PVector(x,y);
+            message = msg;
         }
 
         public void drawVertex()
         {
-
+            // constrain vertex in the window
             loc.x = constrain(loc.x, vertexRadius + 1, width - vertexRadius - 1);
             loc.y = constrain(loc.y, vertexRadius + 1, height - vertexRadius - 1);
             
+            // set pen
             stroke(0);
             strokeWeight(1);
             noFill();
-            //ellipse(loc.x,loc.y - vertexRadius, vertexRadius * 2, vertexRadius);
+            
             // draw vertex as a circle
             ellipse(loc.x, loc.y, vertexRadius * 2, vertexRadius * 2);
             
@@ -626,7 +634,7 @@ public class DrawGraph extends PApplet
                 textSize(12);
             }
             textAlign(CENTER);
-            text(msg, loc.x, loc.y);
+            text(message, loc.x, loc.y);
 
         }
     }
@@ -638,7 +646,8 @@ public class DrawGraph extends PApplet
         boolean directed = true;
         public Vertex edgeStart;
         public Vertex edgeEnd;
-        String msg;
+        String message;
+        String otherMessage;
 
         public Edge(Vertex ss, Vertex ee)
         {
@@ -653,7 +662,7 @@ public class DrawGraph extends PApplet
         {
             edgeStart = ss;
             edgeEnd = ee;
-            this.msg = msg;
+            this.message = msg;
             //this.directed = directed;
         }
         public void drawEdge()
@@ -664,8 +673,6 @@ public class DrawGraph extends PApplet
                 stroke(200);
                 double theta = Math.PI * 3 / 8;
                 strokeWeight(3);
-
-                // line over
                 
                 // draw line up from edge of vertex on left side
                 line(edgeStart.loc.x - vertexRadius * (float) Math.cos(theta),
@@ -684,11 +691,15 @@ public class DrawGraph extends PApplet
                 // draw line between them
                 line(edgeStart.loc.x - vertexRadius * (float) Math.cos(theta), edgeStart.loc.y - vertexRadius * (float) Math.sin(theta) - vertexRadius, edgeStart.loc.x + vertexRadius * (float) Math.cos(theta), edgeStart.loc.y - vertexRadius * (float) Math.sin(theta) - vertexRadius);
                 
+                // add arrow to tip of edge
                 if (directed)
                 {
                     strokeWeight(1);
                     stroke(0);
-                    drawHeading(edgeStart.loc.x + vertexRadius * (float) Math.cos(theta), edgeStart.loc.y - vertexRadius * (float) Math.sin(theta) - headingLen, (float) (Math.PI / 2), headingLen);
+                    drawHeading(edgeStart.loc.x + vertexRadius * (float) Math.cos(theta), 
+                                edgeStart.loc.y - vertexRadius * (float) Math.sin(theta) - headingLen, 
+                                (float) (Math.PI / 2), 
+                                headingLen);
                 }
 
             }
@@ -724,11 +735,6 @@ public class DrawGraph extends PApplet
                             strokeWeight(1);
                             drawHeading((float)((i%2==1)?xStart:xEnd),(float)((i%2==1)?yStart:yEnd),(float)(theta + altMag(i)*Math.PI),headingLen);
                         }
-    //                        xStart = edgeStart.loc.x + vertexRadius * Mah.cos(theta + Math.PI - (Math.PI / 4));
-    //                        yStart = edgeStart.loc.y + vertexRadius * Math.sin(theta + Math.PI - (Math.PI / 4));
-    //                        xEnd = edgeEnd.loc.x + vertexRadius * Math.cos(theta + (Math.PI / 4));
-    //                        yEnd = edgeEnd.loc.y + vertexRadius * Math.sin(theta + (Math.PI / 4));
-    //                        line((float)xStart,(float)yStart,(float)xEnd,(float)yEnd);
                     }
                     else
                     {
@@ -775,18 +781,18 @@ public class DrawGraph extends PApplet
             stroke(255);
             if (edgeStart == edgeEnd)
             {
-                {
-                    //Vertex a = edgeStart;
-                    double theta = Math.PI * 3 / 8;
-                    text(msg, (edgeStart.loc.x - vertexRadius * (float) Math.cos(theta) + (edgeStart.loc.x + vertexRadius * (float) Math.cos(theta))) / 2, edgeStart.loc.y - vertexRadius * (float) Math.sin(theta) - vertexRadius);
-                }
+                // TODO: figure out what on earth theta is for
+                double theta = Math.PI * 3 / 8;
+                text(message, 
+                    (edgeStart.loc.x - vertexRadius * (float) Math.cos(theta) + (edgeStart.loc.x + vertexRadius * (float) Math.cos(theta))) / 2, 
+                     edgeStart.loc.y - vertexRadius * (float) Math.sin(theta) - vertexRadius);
             } 
             else
             {
                 if (bidirectional)
                 {
                 }
-                text(msg, (edgeStart.loc.x + edgeEnd.loc.x) / 2, (edgeStart.loc.y + edgeEnd.loc.y) / 2);
+                text(message, (edgeStart.loc.x + edgeEnd.loc.x) / 2, (edgeStart.loc.y + edgeEnd.loc.y) / 2);
             }
         }
     }
@@ -794,7 +800,6 @@ public class DrawGraph extends PApplet
     public static class LineAutomata
     {
             // An enumerated type for the states of a finite state automata
-
         private static enum State
         {
                 // set of non final states

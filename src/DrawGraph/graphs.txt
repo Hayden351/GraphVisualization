@@ -137,3 +137,68 @@ G = generateCompleteGraph(10);
     );
          */
  
+
+
+
+
+        /*
+        Vertex a;
+        Vertex b;
+        Vertex c;
+        Vertex d;
+
+        Graph G = new Graph();
+        a = new Vertex("0");
+        a.startS = true;
+        G.vertices.add(a);
+        G.edges.add(new Edge(a, a, "\' \'"));
+
+        b = new Vertex("1");
+        G.vertices.add(b);
+        G.edges.add(new Edge(a, a, "\' \'"));
+
+        G.edges.add(new Edge(a, b, "("));
+        G.edges.add(new Edge(b, b, "\' \'"));
+
+        a = new Vertex("2");
+        G.edges.add(new Edge(b, a, "0"));
+        G.vertices.add(a);
+
+        c = new Vertex("3");
+        G.edges.add(new Edge(b, c, "1..9"));
+        G.vertices.add(c);
+        G.edges.add(new Edge(c, c, "0..9"));
+
+        d = new Vertex("4");
+        G.vertices.add(d);
+        G.edges.add(new Edge(d, d, "\' \'"));
+        G.edges.add(new Edge(a, d, "\' \'"));
+        G.edges.add(new Edge(c, d, "\' \'"));
+
+        a = new Vertex("5");
+        G.vertices.add(a);
+        G.edges.add(new Edge(a, a, "\' \'"));
+        G.edges.add(new Edge(d, a, ","));
+
+        d = new Vertex("6");
+        G.vertices.add(d);
+        G.edges.add(new Edge(d, d, "0..9"));
+        G.edges.add(new Edge(a, d, "0..9"));
+
+        a = new Vertex("7");
+        G.vertices.add(a);
+        G.edges.add(new Edge(a, a, "0..9"));
+        G.edges.add(new Edge(d, a, "."));
+
+        d = new Vertex("8");
+        d.finalS = true;
+        G.vertices.add(d);
+        G.edges.add(new Edge(d, d, "\' \'"));
+        G.edges.add(new Edge(a, d, ")"));
+
+        a = new Vertex("9");
+        G.vertices.add(a);
+        G.edges.add(new Edge(a, a, "\' \'"));
+        G.edges.add(new Edge(d, a, ","));
+        G.edges.add(new Edge(a, b, "("));
+*/
